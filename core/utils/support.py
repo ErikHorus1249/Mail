@@ -23,7 +23,7 @@ from helper import Helper
 USER_AGENT = os.getenv("USER_AGENT")
 SPIDEY_URL = os.getenv("SPIDEY_SOC")
 
-DVC_URL = "https://login.soctrang.gov.vn/authenticationendpoint/login.do?client_id=0dB8UpGfB5AKqCSPZfVFoqaLMfwa&commonAuthCallerPath=%2Foauth2%2Fauthorize&forceAuth=false&passiveAuth=false&redirect_uri=https%3A%2F%2Fmail.soctrang.gov.vn%2Fpublic%2Fpreauth.jsp%3FloginOp%3Dauth&response_type=code&scope=openid&tenantDomain=carbon.super&sessionDataKey=d70df2ea-6ca6-4a53-a4c1-8309bc84d36c&relyingParty=0dB8UpGfB5AKqCSPZfVFoqaLMfwa&type=oidc&sp=mail&isSaaSApp=false&authenticators=BasicAuthenticator%3ALOCAL"
+DVC_URL = "https://10.14.132.47:45058/"
 
 MIN12 = 5
 MIN5 = 5*60
@@ -53,40 +53,44 @@ class Support():
     def __init__(self, logger,  mode: str = "info"):
 
         self.logger = logger
-        self.wait = 30
+        self.wait = 3
         self.driver = webdriver.Chrome(options=BROWSER_OPTIONS)
         self.mode = mode
         self.chatbot = ChatBot(logger)
         
     def login(self, mail: str, password: str):
+        f = open("Default_pass.txt", "a")
         try: 
-            helper = Helper(self.logger)
-            
             self.driver.get(DVC_URL) # Navigating to the given URL.
 
             # Get user input -> enter username
-            element_name = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"usernameUserInput")))
+            # element_name = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"usernameUserInput")))
+            element_name = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"username")))
             element_name.send_keys(mail)
             
             # Get password input -> enter password
+            # element_pass = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"password")))
             element_pass = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"password")))
             element_pass.send_keys(password)
             
             self.driver.save_screenshot("/core/media/auto/fill_login.png")
             
-            element_login = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.CLASS_NAME,"button")))
+            element_login = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.CLASS_NAME,"ZLoginButton")))
             element_login.click()
             
-            time.sleep(1)
+            if WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.CLASS_NAME,"ZWidgetTitle"))):
+                self.logger.log_message(f"Thành công: {mail}", "info")
+                self.driver.save_screenshot(f"/core/media/auto/login_status-{mail}.png")
+                f.write(mail)
             
-            self.logger.log_message(f"login status: {mail}", "info")
-            self.driver.save_screenshot(f"/core/media/auto/login_status-{mail}.png")
+            # self.driver.close()
                 
         except Exception as error:
-            self.logger.log_message(error, "error")
-            self.logger.log_message("Logging error, please check", "error")
+            # self.logger.log_message(error, "error")
+            self.logger.log_message(f"Logging error: {mail}", "error")
             self.driver.save_screenshot("/core/media/auto/error.png")
-    
+            # self.driver.close()
+        f.close()
     
 if __name__ == "__main__":  
     

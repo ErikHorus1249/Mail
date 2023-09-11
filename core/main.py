@@ -25,8 +25,8 @@ if __name__ == "__main__":
     support = Support(Logger())
         
     
-    for i in range(0,100):
-        support.login(mail=Lines[i], password="Soctrang@123")
+    for line in Lines:
+        support.login(mail=line, password="Soctrang@123")
     
     # epoch.create_timestamp(9, 0)
     # print(epoch.create_timestamp(7,1))
