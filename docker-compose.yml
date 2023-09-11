@@ -1,0 +1,23 @@
+version: "3.0"
+   
+services:
+  mail:
+    build: 
+      context: .
+      dockerfile: service.Dockerfile
+      args:
+        - NODE_ENV=local
+    env_file:
+      - .env
+      - .env.dev
+      - .env.db
+    container_name: dectect-mailer
+    # command: python /core/main.py
+    # command: python /core/fis_service.py
+    command: python /core/test.py
+    volumes:
+      - ./core:/core
+    # restart: always  
+networks: 
+  mail_net:
+    driver: bridge
