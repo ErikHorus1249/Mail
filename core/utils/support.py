@@ -63,10 +63,7 @@ class Support():
             helper = Helper(self.logger)
             
             self.driver.get(DVC_URL) # Navigating to the given URL.
-            
-            self.logger.log_message(mail, 'info')
-            self.logger.log_message(password, 'info')
-            
+
             # Get user input -> enter username
             element_name = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"usernameUserInput")))
             element_name.send_keys(mail)
@@ -74,9 +71,6 @@ class Support():
             # Get password input -> enter password
             element_pass = WebDriverWait(self.driver, self.wait).until(EC.presence_of_element_located((By.ID,"password")))
             element_pass.send_keys(password)
-            
-            # Click login button 
-            # submit
             
             self.driver.save_screenshot("/core/media/auto/fill_login.png")
             
@@ -86,7 +80,7 @@ class Support():
             time.sleep(1)
             
             self.logger.log_message(f"login status: {mail}", "info")
-            self.driver.save_screenshot("/core/media/auto/login_status.png")
+            self.driver.save_screenshot(f"/core/media/auto/login_status-{mail}.png")
                 
         except Exception as error:
             self.logger.log_message(error, "error")

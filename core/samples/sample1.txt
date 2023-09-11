@@ -1,7 +1,4 @@
 nvquan@soctrang.gov.vn
-
 nvphu2@soctrang.gov.vn
-
-lhdanh@soctrang.gov.vn Soctrang@123 – Chủ tịch huyện Trần Đề, tỉnh Sóc Trăng
-
-lvduc@soctrang.gov.vn Soctrang@123 – Chủ tịch huyện Kế Sách, tỉnh Sóc Trăng
+lhdanh@soctrang.gov.vn
+lvduc@soctrang.gov.vn

@@ -17,7 +17,7 @@ from utils import epoch
 if __name__ == "__main__": 
     # service()
     
-    with open('/core/samples/samples.txt', 'r') as file:
+    with open('/core/samples/sample1.txt', 'r') as file:
         Lines = file.readlines()
         file.close()
         
